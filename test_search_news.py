@@ -13,6 +13,17 @@ def mock_requests(monkeypatch):
         def json(self):
             return self.json_data
 
+        def raise_for_status(self):
+            match self.status_code:
+                case 401:
+                    raise requests.exceptions.HTTPError(f"{self.status_code} Error: Mock error for testing")
+                case 429:
+                    raise requests.exceptions.HTTPError(f"{self.status_code} Error: Mock error for testing")
+                case 500:
+                    raise requests.exceptions.HTTPError(f"{self.status_code} Error: Mock error for testing")
+                case _:
+                    print("No Test Case Implemented for this code")
+    
     def mock_get(url, **kwargs):
         params = kwargs.get("params", {})
         match params.get("q"):
