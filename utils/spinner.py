@@ -1,37 +1,59 @@
+"""
+This module provides a Spinner class to display a spinning animation in the console
+while a running process is executing. The spinner runs in a separate thread and
+can be customized with different messages and animation speeds.
+"""
+
 # Import Relevant Packages
 import itertools
 import threading
 import time
 import sys
 
+# Type Hints
+from typing import Iterator
+
 
 class Spinner:
-    def __init__(self, message="Loading", max_dots=3, load_speed=0.5):
-        self.message = message
-        self.load_speed = load_speed
-        self.max_dots = max_dots
-        self.dots = itertools.cycle(["." * i for i in range(self.max_dots + 1)])
-        self.stop_running = False
-        self.thread = threading.Thread(target=self.init_load_text)
+    def __init__(
+        self, message: str = "Loading...", animation_speed: float = 0.1
+    ) -> None:
+        """
+        Initialize spinner with display message and animation speed
 
-    def start(self):
+        Args:
+            message (str, optional): Message to display. Defaults to "Loading...".
+            animation_speed (float, optional): Speed of spinner animation in seconds. Defaults to 0.1.
+        """
+        self.message = message
+        self.animation_speed = animation_speed
+        self.spinner: Iterator[str] = itertools.cycle(["/", "─", "\\", "|"])
+        self.stop_running: bool = False
+        self.thread: threading.Thread = threading.Thread(target=self._spin)
+
+    def start(self) -> None:
+        """Start new thread for spinner animation"""
+        self.stop_running = False
         self.thread.start()
 
-    def stop(self):
+    def stop(self) -> None:
+        """Stop spinner animation and clear out line"""
         self.stop_running = True
         self.thread.join()
-        sys.stdout.write("\r" + " " * (len(self.message) + self.max_dots) + "\r")
+        sys.stdout.write("\r" + " " * (len(self.message) + 1) + "\r")
         sys.stdout.flush()
 
-    def init_load_text(self):
+    def _spin(self) -> None:
+        """Update spinner animation until stop is called"""
         while not self.stop_running:
-            sys.stdout.write("\r" + self.message + next(self.dots))
+            sys.stdout.write("\r" + self.message + next(self.spinner))
             sys.stdout.flush()
-            time.sleep(self.load_speed)
+            time.sleep(self.animation_speed)
 
 
 if __name__ == "__main__":
-    spinner = Spinner("Something is loading dynamically")
+    # Usage Example
+    spinner = Spinner("Something is loading dynamically...")
 
     spinner.start()
 
