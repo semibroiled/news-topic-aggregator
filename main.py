@@ -35,6 +35,10 @@ def main():
         )
 
         # Guard Clauses to treat input flags
+        # Coerce some kind of input
+        if topic == "":
+            print("You need to type somethin to search")
+            continue
         # Exit Application
         if topic.strip().lower() == ("exit" or "quit"):
             break
@@ -62,7 +66,7 @@ def main():
             continue
 
         # Search Articles from News API
-        print(f"Alright! I will the web for articles about '{topic}'")
+        print(f"Alright! I will search the web for articles about '{topic}'")
         spinner = Spinner("Fetching articles...")
         spinner.start()
         articles = search_news_articles(topic, NEWSAPI_KEY)
