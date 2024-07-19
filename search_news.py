@@ -1,6 +1,7 @@
 # Import Packages
 import requests
 from datetime import datetime, timedelta
+from typing import Optional
 
 
 def get_api_request(): ...
@@ -9,12 +10,12 @@ def get_api_request(): ...
 def search_news_articles(
     topic: str,
     api_key: str,
+    language: Optional[str] = None,
     sort_type: str = "relevancy",
-    language="en",
 ):
     query = f"q={topic}"
     sort = f"&sortBy={sort_type}"
-    language = f"&language={language}"
+    language: Optional[str] = f"&language={language}" if language else None
     url = f"https://newsapi.org/v2/everything?{query}&from={datetime.now() - timedelta(days=30)}{language}{sort}&apiKey={api_key}"
 
     response = requests.get(url)
@@ -37,7 +38,7 @@ def search_news_articles(
             )
         case 200:
             data = response.json()
-            print(data)
+            # print(data)
             for article in data["articles"]:
                 articles.append(
                     {
@@ -48,5 +49,5 @@ def search_news_articles(
                 )
     return articles
 
-def summarize_content(content):
-    
+
+def summarize_content(content): ...
