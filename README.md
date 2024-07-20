@@ -38,15 +38,15 @@ python src/main.py
 ## Run Unit Tests
 
 To run tests, from the project directory in terminal use command:
-=> `pytest`
-or =>`pytest -v` for detailed output in verbose mode
-=> `pytest -s` to show print statements
-=> `pytest -x` to stop after first FAIL
+1. => `pytest`
+2. or =>`pytest -v` for detailed output in verbose mode
+3. => `pytest -s` to show print statements
+4. => `pytest -x` to stop after first FAIL
 
-Run pytest for a specific file
-=> `pytest path/to/test_file.py`
+5. Run pytest for a specific file
+ => `pytest path/to/test_file.py`
 
-Run specific test within a file
+6. Run specific test within a file
 => `pytest path/to/test_file.py::test_case_name`
 
 ## Configuring .env
