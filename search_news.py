@@ -83,9 +83,9 @@ nltk.download("words")
 
 
 def summarize_content(content):
-    hf_llm = HuggingFaceEndpoint(model_name="facebook/bart-large-cnn")
-    summarize_chain = LLMChain(llm=hf_llm, prompt=summarize_content)
-    summary = summarize_chain.run({"content": content})
+    hf_endpoint = HuggingFaceEndpoint(repo_id="facebook/bart-large-cnn")
+    summarize_chain = summarization_template| hf_endpoint # prompt | llm
+    summary = summarize_chain.invoke({"content": content})
     return summary
 
 
