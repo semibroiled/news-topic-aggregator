@@ -1,8 +1,14 @@
+# Envrionment Init
 .venv/
 venv/
 .DS_Store
 
+# Binary Files or Secrets
 .env
 *.pyc
-
 *.csv
+
+# Cache folders
+__pycache__/
+.pytest_cache/
+

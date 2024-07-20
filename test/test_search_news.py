@@ -1,7 +1,7 @@
 import pytest
 import requests
-from search_news import search_news_articles
-from search_news import summarize_content_pipeline, extract_named_entities
+from src.search_news import search_news_articles
+from src.summarize_content import summarize_content_pipeline, extract_named_entities
 
 
 @pytest.fixture
