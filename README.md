@@ -165,3 +165,26 @@ The main script is currently verbose but maintains clarity and functionality. Fu
 
 Named Entity Recognition (NER) sometimes capitalizes normal words incorrectly. Although no workaround has been found yet, the pipeline’s keyword summarization remains effective.
 
+#### Date From and To Handling
+
+I took the 'at least one month' and took the liberty to interpret it as 
+for the last month only for the sake of convenienve. Despite plenty of neat stuff there is no way to set that within CLI
+
+#### CLI is done with Input and Print
+
+I didn't use argparse or really my favourites click/questionary to make the CLI. That was a hindsight. I am too used the past month to make CLIs in C++ and zoned myself in. It works, so I don't plant to fix that soon. Neat todo for later
+
+#### Application is slow
+
+The application is a bit bloated perhaps and hence slow. The first few dozen runs it wasn't really like that. It just sort of happened. 
+
+I suspect exporting PYTHONPATH temporarily so many times might have done something, or just that the runtime itself is slow due to many unoptimized elements. 
+
+#### Sanitized Inputs
+
+I wanted to let '!' still be the basis for my CLI Commands so I let it pass through sanitization process of inputs- there should be a better or more robust way to do this. 
+
+#### Match statement for HTTP Errors
+
+Its verbose and unnecessary, I had it in when I was coding and debugging, and kept it inside still. It would be a good idea to take them out for clarity in code. 
+
