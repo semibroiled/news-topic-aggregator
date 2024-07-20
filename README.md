@@ -65,9 +65,9 @@ Enter your API Key for News API instead of the example listed.
 
 Upon running the application, you will be prompted to enter a topic to search. You can also use the following commands:
 
--> !help - Display usage instructions.
--> !setlang - Change query language.
--> !exit or !quit - Close the application.
+- !help - Display usage instructions.
+- !setlang - Change query language.
+- !exit or !quit - Close the application.
 
 ## Project Structure
 
