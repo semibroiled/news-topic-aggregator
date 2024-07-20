@@ -17,7 +17,7 @@ def sanitize_input(user_input: str) -> str:
     """
     # Basic sanitizatio
     # Basic sanitization to remove potentially harmful characters
-    sanitized_input = re.sub(r"[^a-zA-Z0-9\s!]", "", user_input)
+    sanitized_input = re.sub(r"[^a-zA-Z0-9\s!+\"-]", "", user_input)
     return sanitized_input
 
 

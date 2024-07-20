@@ -28,7 +28,10 @@ def mock_requests(monkeypatch):
                         f"{self.status_code} Error: Mock error for testing"
                     )
                 case _:
-                    print("No Test Case Implemented for this code")
+                    if self.status_code != 200:
+                        raise requests.exceptions.RequestException(
+                            "Mock error for testing"
+                        )
 
     def mock_get(url, **kwargs):
         params = kwargs.get("params", {})
@@ -84,6 +87,7 @@ def test_search_news_articles_server_error(mock_requests):
 def test_search_news_articles_network_error(mock_requests):
     with pytest.raises(requests.exceptions.RequestException):
         search_news_articles("network_error", "dummy_api_key")
+
 
 if __name__ == "__main__":
     pytest.main()
