@@ -62,6 +62,21 @@ To Run in Docker, you need to have Docker Desktop installed and running in the b
 1. `docker build -t news-topic-aggregator .`
 2. `docker run -it --rm --env-file .env news-topic-aggregator`
 
+## Shell Script to Run it with PYTHONPATH exported
+
+This is a simple Shell script to run the application. You do need to make sure that the `.env` file with API Key and `.venv` is already correctly configued.
+
+You do not need to activate the virtual envrionment.
+
+1. `chmod +x start.sh`
+2. `./start.sh --run` or `./start.sh --test` or `./start.sh --docker`
+
+- `--run` flag starts the application
+- `--test` flag runs pytest suite before starting application
+- `--docker` flag builds docker image and runs container
+
+This script is written in bash.
+
 ## Setting up News API Token
 
 1. Make an account at https://newsapi.org/
