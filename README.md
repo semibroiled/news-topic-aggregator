@@ -71,6 +71,7 @@ Upon running the application, you will be prompted to enter a topic to search. Y
 
 ## Project Structure
 
+```sh
 news-topic-aggregator/
 ├── .venv/
 ├── history/
@@ -88,6 +89,7 @@ news-topic-aggregator/
 ├── .gitignore
 ├── README.md
 └── requirements.txt
+```
 
 ### History
 
