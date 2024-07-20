@@ -7,7 +7,7 @@ from datetime import datetime
 from search_news import search_news_articles
 
 # Import Summarization Modules
-from search_news import summarize_content, extract_named_entities
+from search_news import summarize_content_pipeline, extract_named_entities
 #from getpass import getpass
 
 # Import Console Animation
@@ -96,7 +96,7 @@ def main():
         df_articles.to_csv(csv_filename, index=False)
         print(f"All articles saved to {csv_filename} in history subfolder\n")
 
-        summary = summarize_content("\n".join([article["title"] for article in articles[:15]]), api_key=HUGGING_FACE_API_KEY)
+        summary = summarize_content_pipeline("\n".join([article["title"] for article in articles[:15]]))
 
         named_entities = extract_named_entities("\n".join(article["title"] for article in articles[:15] ))
 
@@ -106,7 +106,7 @@ def main():
         print("\n")
 
         print("*--Named Entities in Top 15 Articles Headlines--*")
-        for entity, freq in named_entities.items():
+        for entity, freq in named_entities.most_common():
             print(f"{entity}: {freq}")
         
         print("\n")
