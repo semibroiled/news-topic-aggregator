@@ -94,3 +94,6 @@ news-topic-aggregator/
 ### History
 
 Search results from your topic search will be saved in the history subfolder. You can identify separate files by virtue of search term and date/time. 
+
+### Design Choices
+
