@@ -58,7 +58,7 @@ Enter your API Key for News API instead of the example listed.
 ## Setting up News API Token
 
 1. Make an account at https://newsapi.org/
-2. Press *Get API Key->* Button on Homepage
+2. Press **Get API Key->** Button on Homepage
 3. You will be offered a free development API Key. Be sure to save it and use it
 
 ## Navigating the Application
