@@ -78,21 +78,6 @@ def search_news_articles(
 
     # Conditionally Treat Different Status Code
     match response.status_code:
-        case 401:
-            print(
-                "Unauthorized Error: There seems to be something wrong with your API Key"
-            )
-            response.raise_for_status()
-        case 429:
-            print(
-                "Too Many Requests Error: You made too many requests. Take a breather before trying again"
-            )
-            response.raise_for_status()
-        case 500:
-            print(
-                "Server Error: News API is having server issues. There's not quick fix for this :("
-            )
-            response.raise_for_status()
         case 200:
             data = response.json()
             # print(data)

@@ -90,10 +90,14 @@ def main():
                     continue    
         # Search Articles from News API
         print(f"\nAlright! I will search the web for articles about '{topic}'")
-        spinner = Spinner("Fetching articles...")
-        spinner.start()
-        articles = search_news_articles(topic, NEWS_API_KEY)
-        spinner.stop()
+        
+        
+        with Spinner("Fetching Articles..."):
+            try:
+                articles = search_news_articles(topic, NEWS_API_KEY)
+            except Exception as e:
+                print(e)
+                continue
 
         # If no articles found, let us know some details and skip iteration
         if not articles:
@@ -112,19 +116,16 @@ def main():
         print(f"\nAll articles saved to {csv_filename} in history subfolder")
         
         # Requirement 3: Summarize Headlines of Top 15  Articles
-        spinner = Spinner("Summarizing Headlines...")
-        spinner.start()
-        summary = summarize_content_pipeline("\n".join([article["title"] for article in articles[:15]]))
-        spinner.stop()
+        with Spinner("Summarizing Headlines..."):
+            summary = summarize_content_pipeline("\n".join([article["title"] for article in articles[:15]]))
+ 
         print("\n*--Summary of Top 15 Articles Headlines--*")
         print(summary)
 
         # Requirement 4: List Named Entities in Descending Order
-        spinner = Spinner("Listing Named Entities...")
-        spinner.start()
-        named_entities = extract_named_entities("\n".join(article["title"] for article in articles[:15] ))
-        spinner.stop()
-        #‚print("\n")
+        with Spinner("Listing Named Entities..."):
+            named_entities = extract_named_entities("\n".join(article["title"] for article in articles[:15] ))
+        #print("\n")
         print("\n*--Named Entities in Top 15 Articles Headlines--*")
         for entity, freq in named_entities.most_common():
             print(f"{entity}: {freq}")

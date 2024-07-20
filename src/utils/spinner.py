@@ -31,6 +31,23 @@ class Spinner:
         self.stop_running: bool = False
         self.thread: threading.Thread = threading.Thread(target=self._spin)
 
+    def __enter__(self) -> "Spinner":
+        """Start Spinner animation when entering context"""
+        self.start()
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback) -> None:
+        """
+        Stop spinner animation when exiting context.
+        Clean out resources.
+
+        Args:
+            exc_type (type): The exception type.
+            exc_value (Exception): The exception instance.
+            traceback (traceback): The traceback object.
+        """
+        self.stop()
+
     def start(self) -> None:
         """Start new thread for spinner animation"""
         self.stop_running = False
@@ -53,10 +70,16 @@ class Spinner:
 
 if __name__ == "__main__":
     # Usage Example
+    print("Using Spinner normally")
     spinner = Spinner("Something is loading dynamically...")
 
     spinner.start()
 
-    time.sleep(15)  # Simulate a process
+    time.sleep(10)  # Simulate a process
 
     spinner.stop()
+
+    # With Context Manager
+    print("Using Spinner in context manager")
+    with Spinner("Something is loading dynamically in a context..."):
+        time.sleep(10)
