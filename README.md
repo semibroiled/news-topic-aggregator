@@ -68,6 +68,24 @@ Upon running the application, you will be prompted to enter a topic to search. Y
 - !help - Display usage instructions.
 - !setlang - Change query language.
 - !exit or !quit - Close the application.
+ 
+### Language Settings
+
+To change the query language, use the !setlang command. Type en for English or de for German.
+
+Application Defaults to English.
+
+### Application Settings
+
+Type !exit or !quit to close the application.
+
+### Advanced Queries
+
+	•	Exact Match: Use quotation marks for exact matches, e.g., "elon musk".
+	•	Mandatory/Excluded Keywords: Use + and - to specify mandatory and excluded keywords, e.g., gamestop +stonks -sell.
+	•	Boolean Operators: Use Boolean operators for complex queries, e.g., (crypto AND bitcoin) NOT ethereum.
+	•	Title-Specific Search: Limit search to titles using InTitle="title search".
+
 
 ## Project Structure
 
@@ -95,5 +113,33 @@ news-topic-aggregator/
 
 Search results from your topic search will be saved in the history subfolder. You can identify separate files by virtue of search term and date/time. 
 
-### Design Choices
+### Design Choices Brainstorming
+
+#### Flexibility with LangChain
+
+LangChain was chosen to allow potential switching between different services, ensuring the project isn’t restricted to one service.
+
+#### Community Focus with Hugging Face
+
+Hugging Face was selected for its open-source nature and active community, providing access to state-of-the-art NLP models.
+
+#### Transition to Pipelines
+
+Initially, API endpoints were used, but issues with internal kwargs calls led to a transition to pipelines. This approach leverages local resources for more reliable processing.
+
+#### TODO Modular API Calls
+
+To improve maintainability, API calls are separated into utility functions, making the codebase cleaner and easier to manage.
+
+#### TODO ANSI Colours 
+
+To improve readability and usability, it would be nice to use ANSI Codes to make the terminal application pretty.
+
+#### Verbose Main Script
+
+The main script is currently verbose but maintains clarity and functionality. Future refactoring will focus on modularizing the code.
+
+#### NER Limitations
+
+Named Entity Recognition (NER) sometimes capitalizes normal words incorrectly. Although no workaround has been found yet, the pipeline’s keyword summarization remains effective.
 
