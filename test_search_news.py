@@ -1,7 +1,7 @@
 import pytest
 import requests
 from search_news import search_news_articles
-from search_news import summarize_content, extract_named_entities
+from search_news import summarize_content_pipeline, extract_named_entities
 
 
 @pytest.fixture
@@ -103,11 +103,11 @@ def test_summarize_content(monkeypatch):
         def __call__(self, *args, **kwargs):
             return [{"summary_text": "This is a summary"}]
 
-    monkeypatch.setattr("langchain_huggingface.HuggingFaceEndpoint", MockSummarizer)
+    monkeypatch.setattr("langchain_huggingface.HuggingFacePipeline", MockSummarizer)
 
-    content = "This is a form of content that is very engaging and intersting"
-    summary = summarize_content(content, api_key="mock_api_key")
-    assert summary == "This is a summary"
+    content = "This is a longform content that serves solely to mock unittest a reusable function. The goal is to see if we get a sensible output that is shorter version of the content here whilst still containing the most important information"
+    summary = summarize_content_pipeline(content)
+    assert len(summary) < len(content)
 
 
 if __name__ == "__main__":

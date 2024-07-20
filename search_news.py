@@ -3,16 +3,9 @@ import requests
 from datetime import datetime, timedelta
 from typing import Optional
 
-from langchain_huggingface import HuggingFaceEndpoint
-from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain
+from langchain_huggingface import HuggingFacePipeline
 import nltk
 from collections import Counter
-
-from utils.get_keys import get_env
-
-
-def get_api_request(): ...
 
 
 def search_news_articles(
@@ -71,31 +64,26 @@ def search_news_articles(
             response.raise_for_status()
     return articles
 
-
-# Define a Prompt Template for Summary
-query_template = (
-    "Make a succint summary of the following News Headlines: \n{content}\nSummary: "
-)
-
-summarization_template = PromptTemplate.from_template(query_template)
-
 nltk.download("punkt")
 nltk.download("averaged_perceptron_tagger")
 nltk.download("maxent_ne_chunker")
 nltk.download("words")
 
 
-def summarize_content(
+def summarize_content_pipeline(
     content,
-    api_key=None,
-    repo_id="facebook/bart-large-cnn",
+    model_id="facebook/bart-large-cnn",
 ):
-    hf_endpoint = HuggingFaceEndpoint(
-        repo_id=repo_id,
-        huggingfacehub_api_token=api_key,
+    hf_llm = HuggingFacePipeline.from_model_id(
+        model_id=model_id,
+        task="summarization",
+        pipeline_kwargs={
+            "max_length": 150,
+            "min_length": 30,
+            "do_sample": False,
+        },
     )
-    summarize_chain = summarization_template | hf_endpoint  # prompt | llm
-    summary = summarize_chain.invoke({"content": content})
+    summary = hf_llm.invoke(content)
     return summary
 
 
