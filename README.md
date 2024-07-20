@@ -55,6 +55,13 @@ Rename the `.env.example` file to `.env`
 
 Enter your API Key for News API instead of the example listed.
 
+## Running in Docker
+
+To Run in Docker, you need to have Docker Desktop installed and running in the background. From your repository, use
+
+1. `docker build -t news-topic-aggregator .`
+2. `docker run -it --rm --env-file .env news-topic-aggregator`
+
 ## Setting up News API Token
 
 1. Make an account at https://newsapi.org/
