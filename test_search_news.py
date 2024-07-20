@@ -91,10 +91,10 @@ def test_summarize_content(monkeypatch):
         def __init__(self, *args, **kwargs):
             pass
 
-        def __call__(self, content):
+        def __call__(self, *args, **kwargs):
             return [{"summary_text": "This is a summary"}]
         
-    monkeypatch.setattr("transformers.pipeline", MockSummarizer)
+    monkeypatch.setattr("langchain_huggingface.HuggingFaceEndpoint", MockSummarizer)
 
     content = "This is a form of content that is very engaging and intersting"
     summary = summarize_content(content)
