@@ -6,6 +6,10 @@ from datetime import datetime
 # Import News Search Modules
 from search_news import search_news_articles
 
+# Import Summarization Modules
+from search_news import summarize_content, extract_named_entities
+#from getpass import getpass
+
 # Import Console Animation
 from utils.spinner import Spinner
 
@@ -22,7 +26,10 @@ class ApplicationMode(Enum):
 def main():
 
     # Initialize debut settings
-    NEWSAPI_KEY = get_env("NEWS_API_KEY") # Extract API Key
+    NEWS_API_KEY = get_env("NEWS_API_KEY") # Extract API Key for NewsAPI
+    #HUGGINGFACEHUB_API_KEY = getpass() # Extract API Key for HF
+    #os.environ["HUGGINGFACEHUB_API_KEY"] = HUGGINGFACEHUB_API_KEY
+    HUGGING_FACE_API_KEY = get_env("HUGGING_FACE_API_KEY")
     language = None
 
     # Run Application
@@ -37,7 +44,7 @@ def main():
         # Guard Clauses to treat input flags
         # Coerce some kind of input
         if topic == "":
-            print("You need to type somethin to search")
+            print("\nWARNING: You need to type something to search\n")
             continue
         # Exit Application
         if topic.strip().lower() == ("exit" or "quit"):
@@ -69,12 +76,12 @@ def main():
         print(f"Alright! I will search the web for articles about '{topic}'")
         spinner = Spinner("Fetching articles...")
         spinner.start()
-        articles = search_news_articles(topic, NEWSAPI_KEY)
+        articles = search_news_articles(topic, NEWS_API_KEY)
         spinner.stop()
 
         # If no articles found, let us know some details and skip iteration
         if not articles:
-            print(f"No articles found for the topic\n>>{topic}<<\nin >>{language}<<.\n")
+            print(f"No articles found.\nTopic >>{topic}<<\nLanguage >>{language}<<.\n")
             continue
         
         # Requirement 1: Print Top 15 Articles by Sort
@@ -88,6 +95,21 @@ def main():
         csv_filename = f"history/{topic.replace(" ", "_")}_articles_{language}_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv"
         df_articles.to_csv(csv_filename, index=False)
         print(f"All articles saved to {csv_filename} in history subfolder\n")
+
+        summary = summarize_content("\n".join([article["title"] for article in articles[:15]]), api_key=HUGGING_FACE_API_KEY)
+
+        named_entities = extract_named_entities("\n".join(article["title"] for article in articles[:15] ))
+
+        print("*--Summary of Top 15 Articles Headlines--*")
+        print(summary)
+
+        print("\n")
+
+        print("*--Named Entities in Top 15 Articles Headlines--*")
+        for entity, freq in named_entities.items():
+            print(f"{entity}: {freq}")
+        
+        print("\n")
 
 if __name__ == "__main__":
     print("Starting Application...")

@@ -9,6 +9,8 @@ from langchain.chains import LLMChain
 import nltk
 from collections import Counter
 
+from utils.get_keys import get_env
+
 
 def get_api_request(): ...
 
@@ -71,10 +73,11 @@ def search_news_articles(
 
 
 # Define a Prompt Template for Summary
-summarization_template = PromptTemplate(
-    input_variables=["content"],
-    template="Make a succint summary of the following content: \n{content}\nSummary:",
+query_template = (
+    "Make a succint summary of the following News Headlines: \n{content}\nSummary: "
 )
+
+summarization_template = PromptTemplate.from_template(query_template)
 
 nltk.download("punkt")
 nltk.download("averaged_perceptron_tagger")
@@ -82,9 +85,16 @@ nltk.download("maxent_ne_chunker")
 nltk.download("words")
 
 
-def summarize_content(content):
-    hf_endpoint = HuggingFaceEndpoint(repo_id="facebook/bart-large-cnn")
-    summarize_chain = summarization_template| hf_endpoint # prompt | llm
+def summarize_content(
+    content,
+    api_key=None,
+    repo_id="facebook/bart-large-cnn",
+):
+    hf_endpoint = HuggingFaceEndpoint(
+        repo_id=repo_id,
+        huggingfacehub_api_token=api_key,
+    )
+    summarize_chain = summarization_template | hf_endpoint  # prompt | llm
     summary = summarize_chain.invoke({"content": content})
     return summary
 

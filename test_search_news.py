@@ -3,6 +3,7 @@ import requests
 from search_news import search_news_articles
 from search_news import summarize_content, extract_named_entities
 
+
 @pytest.fixture
 def mock_requests(monkeypatch):
     class MockResponse:
@@ -16,14 +17,20 @@ def mock_requests(monkeypatch):
         def raise_for_status(self):
             match self.status_code:
                 case 401:
-                    raise requests.exceptions.HTTPError(f"{self.status_code} Error: Mock error for testing")
+                    raise requests.exceptions.HTTPError(
+                        f"{self.status_code} Error: Mock error for testing"
+                    )
                 case 429:
-                    raise requests.exceptions.HTTPError(f"{self.status_code} Error: Mock error for testing")
+                    raise requests.exceptions.HTTPError(
+                        f"{self.status_code} Error: Mock error for testing"
+                    )
                 case 500:
-                    raise requests.exceptions.HTTPError(f"{self.status_code} Error: Mock error for testing")
+                    raise requests.exceptions.HTTPError(
+                        f"{self.status_code} Error: Mock error for testing"
+                    )
                 case _:
                     print("No Test Case Implemented for this code")
-    
+
     def mock_get(url, **kwargs):
         params = kwargs.get("params", {})
         match params.get("q"):
@@ -79,12 +86,14 @@ def test_search_news_articles_network_error(mock_requests):
     with pytest.raises(requests.exceptions.RequestException):
         search_news_articles("network_error", "dummy_api_key")
 
+
 def test_extract_named_entities():
     text = "Amitav Chris Mostafa is applying to Summetix for a job. Johannes Daxenberger is going to interview him"
     named_entities = extract_named_entities(text)
     assert "Amitav Chris Mostafa" in named_entities
     assert "Johannes Daxenberger" in named_entities
     assert "Summetix" in named_entities
+
 
 def test_summarize_content(monkeypatch):
     class MockSummarizer:
@@ -93,12 +102,13 @@ def test_summarize_content(monkeypatch):
 
         def __call__(self, *args, **kwargs):
             return [{"summary_text": "This is a summary"}]
-        
+
     monkeypatch.setattr("langchain_huggingface.HuggingFaceEndpoint", MockSummarizer)
 
     content = "This is a form of content that is very engaging and intersting"
-    summary = summarize_content(content)
+    summary = summarize_content(content, api_key="mock_api_key")
     assert summary == "This is a summary"
 
-if __name__ =="__main__":
+
+if __name__ == "__main__":
     pytest.main()
