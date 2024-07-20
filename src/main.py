@@ -7,7 +7,6 @@ from src.search_news import search_news_articles
 
 # Import Summarization Modules
 from src.summarize_content import summarize_content_pipeline, extract_named_entities
-#from getpass import getpass
 
 # Import Console Animation  
 from src.utils.spinner import Spinner
