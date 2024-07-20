@@ -13,6 +13,8 @@ from src.summarize_content import summarize_content_pipeline, extract_named_enti
 from src.utils.spinner import Spinner
 # Import ENV Utils
 from src.utils.get_keys import get_env
+# Import Input Cleaner
+from src.utils.secure_input import sanitize_input
 
 # Import Enum for Descriptive Constants
 from enum import Enum
@@ -40,6 +42,8 @@ def main():
             "\nWhat topic would you like to search?\n"\
             ">>"
         )
+
+        topic = sanitize_input(topic)
 
         # Guard Clauses to treat input flags
         # Coerce some kind of input
@@ -74,6 +78,7 @@ def main():
                 .strip()
                 .lower()
             )
+            language = sanitize_input(language)
             print(f"Language is set to >>{language}<<")
             match language:
                 case "de":
