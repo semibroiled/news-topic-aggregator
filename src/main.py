@@ -61,9 +61,10 @@ def main():
                 "\t-- Type in '!exit' or '!quit' to close application\n"\
                 "- Advanced Queries\n"\
                 "\t--Put your topic in quotation marks for exact match. (eg: \"elon musk\")\n"\
-                "\t--Use '+' and '-' to specify which keywords must or must not appear. (eg: gamestop +stonks -sell)\n"\
+                #"\t--Use '+' and '-' to specify which keywords must or must not appear. (eg: gamestop +stonks -sell)\n"\
                 "\t--Use Boolean Operators. (eg: (crypto AND bitcoin) NOT ethereum)\n"\
-                "\t--Limit search to titles or content. (eg: InTitle=\"title search\")\n")
+                #"\t--Limit search to titles or content. (eg: InTitle=\"title search\")\n"
+            )
             continue
         # Change Language
         if topic.strip().lower() == "!setlang":
@@ -118,7 +119,7 @@ def main():
         # Requirement 3: Summarize Headlines of Top 15  Articles
         with Spinner("Summarizing Headlines..."):
             summary = summarize_content_pipeline("\n".join([article["title"] for article in articles[:15]]))
- 
+            
         print("\n*--Summary of Top 15 Articles Headlines--*")
         print(summary)
 
