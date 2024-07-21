@@ -33,7 +33,6 @@ def main():
     NEWS_API_KEY = get_env("NEWS_API_KEY") # Extract API Key for NewsAPI
     with open("config.yaml", "r") as f:
         config = yaml.safe_load(f)
-
     language = config["default_language"] # Default to English 
     # Usage Hints
     print("\nEnter a topic to search. Or..\n"
