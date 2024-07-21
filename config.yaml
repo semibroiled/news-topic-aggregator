@@ -1,0 +1,10 @@
+default_language: en
+output:
+  folder: history
+news_api:
+  base_url: https://newsapi.org/v2/
+  endpoint: everything
+  sort_type: relevancy
+  language: en
+
+
