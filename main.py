@@ -1,6 +1,7 @@
 # Import Relevant Packages
 import pandas as pd
 from datetime import datetime
+import os
 
 # Import News Search Modules
 from src.search_news import search_news_articles
@@ -112,12 +113,21 @@ def main():
             print(f"{i+1} -> {article["title"]} ({article["publishedAt"]}) - {article["url"]}")
         # Requirement 2: Save Articles as a CSV file
         df_articles = pd.DataFrame(articles)
-        csv_filename = f"history/{topic.replace(" ", "_")}_articles_{language}_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv"
+        
+        # Define the destination path
+        destination_path = './output'
+
+        # Create a folder for the output if it doesn't exist
+        if not os.path.exists(os.path.dirname(destination_path)):
+            print("Path:'./history' not found")
+            print("Making './history'")
+            os.makedirs(os.path.dirname(destination_path))
+        csv_filename = f"{destination_path}/{topic.replace(" ", "_")}_articles_{language}_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv"
         df_articles.to_csv(csv_filename, index=False)
         print(f"\nAll articles saved to {csv_filename} in history subfolder")
         
         # Requirement 3: Summarize Headlines of Top 15  Articles
-        with Spinner("Summarizing Headlines..."):
+        with Spinner("\nSummarizing Headlines..."):
             summary = summarize_content_pipeline("\n".join([article["title"] for article in articles[:15]]))
             
         print("\n*--Summary of Top 15 Articles Headlines--*")
