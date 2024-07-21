@@ -18,4 +18,4 @@ ENV PYTHONPATH=/app
 
 
 # Run the main.py when the container launches
-CMD ["python", "src/main.py"]
+CMD ["python", "main.py"]
