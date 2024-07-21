@@ -2,6 +2,7 @@
 import pandas as pd
 from datetime import datetime
 from pathlib import Path
+import yaml
 
 # Import News Search Modules
 from src.search_news import search_news_articles
@@ -15,6 +16,8 @@ from src.utils.spinner import Spinner
 from src.utils.get_keys import get_env
 # Import Input Cleaner
 from src.utils.secure_input import sanitize_input
+# Import Help Strings
+from src.cli_help import help_command_output
 
 # Import Enum for Descriptive Constants
 from enum import Enum
@@ -28,7 +31,10 @@ def main():
 
     # Initialize debut settings
     NEWS_API_KEY = get_env("NEWS_API_KEY") # Extract API Key for NewsAPI
-    language = "en" # Default to English 
+    with open("config.yaml", "r") as f:
+        config = yaml.safe_load(f)
+
+    language = config["default_language"] # Default to English 
     # Usage Hints
     print("\nEnter a topic to search. Or..\n"
         "Type '!help' to get usage instructions\n"
@@ -55,17 +61,7 @@ def main():
             break
         # Help String
         if topic.strip().lower() == "!help":
-            print("- Language Settings\n"\
-                "\t-- Use command '!setlang' on prompt to change query language\n"\
-                "\t-- Type 'en' for English and 'de' for German\n"\
-                "- Application Settings\n"\
-                "\t-- Type in '!exit' or '!quit' to close application\n"\
-                "- Advanced Queries\n"\
-                "\t--Put your topic in quotation marks for exact match. (eg: \"elon musk\")\n"\
-                #"\t--Use '+' and '-' to specify which keywords must or must not appear. (eg: gamestop +stonks -sell)\n"\
-                "\t--Use Boolean Operators. (eg: (crypto AND bitcoin) NOT ethereum)\n"\
-                #"\t--Limit search to titles or content. (eg: InTitle=\"title search\")\n"
-            )
+            print(help_command_output())
             continue
         # Change Language
         if topic.strip().lower() == "!setlang":
@@ -116,7 +112,7 @@ def main():
         df_articles = pd.DataFrame(articles)
         
         # Define the destination path
-        destination_path = Path('./output')
+        destination_path = Path(config["output"]["folder"])
 
         # Create a folder for the output if it doesn't exist
         if not destination_path.exists():
