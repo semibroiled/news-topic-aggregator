@@ -7,7 +7,7 @@ run_app() {
     # Export Python Path to include src
     export PYTHONPATH=$PYTHONPATH:./src
     # Run CLI app
-    python src/main.py
+    python main.py
     # Deactivate Venv
     deactivate
 }
@@ -20,7 +20,7 @@ run_app_with_test(){
     # Run Pytest suite
     pytest
     # Run CLI app
-    python src/main.py
+    python main.py
     # Deactivate Venv
     deactivate
 }
