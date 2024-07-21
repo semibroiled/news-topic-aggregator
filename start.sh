@@ -35,7 +35,7 @@ run_docker(){
     echo "Make sure .env and /history is configured correctly"
     docker run -it --rm --env-file .env -v "$(pwd)/history:/app/history" news-topic-aggregator
 }
-w
+
 # Check flags to decide what to run
 # Check the provided flag
 if [ "$1" == "--run" ]; then
