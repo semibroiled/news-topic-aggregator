@@ -102,7 +102,7 @@ def main():
             continue
         
         # Requirement 1: Print Top 15 Articles by Sorting Relevance
-        print("\nTop 15 Articles:")
+        print("\n########Top 15 Articles########")
 
         for i, article in enumerate(articles[:15]):
             print(f"{i+1} -> {article["title"]} ({article["publishedAt"]}) - {article["url"]}")
