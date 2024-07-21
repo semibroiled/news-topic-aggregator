@@ -119,12 +119,12 @@ def main():
 
         # Create a folder for the output if it doesn't exist
         if not os.path.exists(os.path.dirname(destination_path)):
-            print("Path:'./history' not found")
-            print("Making './history'")
-            os.makedirs(os.path.dirname(destination_path))
+            print(f"Path:('{destination_path}') not found")
+            print(f"Making '{destination_path}'")
+            os.makedirs(destination_path)
         csv_filename = f"{destination_path}/{topic.replace(" ", "_")}_articles_{language}_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv"
         df_articles.to_csv(csv_filename, index=False)
-        print(f"\nAll articles saved to {csv_filename} in history subfolder")
+        print(f"\nAll articles saved to Path('{csv_filename}') in {destination_path} subfolder")
         
         # Requirement 3: Summarize Headlines of Top 15  Articles
         with Spinner("\nSummarizing Headlines..."):
