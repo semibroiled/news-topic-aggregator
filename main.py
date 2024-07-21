@@ -1,7 +1,7 @@
 # Import Relevant Packages
 import pandas as pd
 from datetime import datetime
-import os
+from pathlib import Path
 
 # Import News Search Modules
 from src.search_news import search_news_articles
@@ -115,16 +115,17 @@ def main():
         df_articles = pd.DataFrame(articles)
         
         # Define the destination path
-        destination_path = './output'
+        destination_path = Path('./output')
 
         # Create a folder for the output if it doesn't exist
-        if not os.path.exists(os.path.dirname(destination_path)):
+        if not destination_path.exists():
             print(f"Path:('{destination_path}') not found")
             print(f"Making '{destination_path}'")
-            os.makedirs(destination_path)
-        csv_filename = f"{destination_path}/{topic.replace(" ", "_")}_articles_{language}_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv"
-        df_articles.to_csv(csv_filename, index=False)
-        print(f"\nAll articles saved to Path('{csv_filename}') in {destination_path} subfolder")
+            destination_path.mkdir(parents=True, exist_ok=True)
+        csv_filename = f"{topic.replace(" ", "_")}_articles_{language}_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv"
+        save_file = destination_path / csv_filename
+        df_articles.to_csv(save_file, index=False)
+        print(f"\nAll articles saved to Path('{save_file}') in {destination_path} subfolder")
         
         # Requirement 3: Summarize Headlines of Top 15  Articles
         with Spinner("\nSummarizing Headlines..."):
