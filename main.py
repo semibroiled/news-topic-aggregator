@@ -111,6 +111,7 @@ def main():
 
         for i, article in enumerate(articles[:15]):
             print(f"{i+1} -> {article["title"]} ({article["publishedAt"]}) - {article["url"]}")
+        
         # Requirement 2: Save Articles as a CSV file
         df_articles = pd.DataFrame(articles)
         
@@ -128,7 +129,8 @@ def main():
         print(f"\nAll articles saved to Path('{save_file}') in {destination_path} subfolder")
         
         # Requirement 3: Summarize Headlines of Top 15  Articles
-        with Spinner("\nSummarizing Headlines..."):
+        print("\n")
+        with Spinner("Summarizing Headlines..."):
             summary = summarize_content_pipeline("\n".join([article["title"] for article in articles[:15]]))
             
         print("\n*--Summary of Top 15 Articles Headlines--*")
