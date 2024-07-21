@@ -119,6 +119,7 @@ def main():
             print(f"Path:('{destination_path}') not found")
             print(f"Making '{destination_path}'")
             destination_path.mkdir(parents=True, exist_ok=True)
+        # Set Filename and Save Path; Save File from df to CSV
         csv_filename = f"{topic.replace(" ", "_")}_articles_{language}_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv"
         save_file = destination_path / csv_filename
         df_articles.to_csv(save_file, index=False)
