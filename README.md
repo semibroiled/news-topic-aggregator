@@ -4,6 +4,8 @@ This project is a CLI Apllication that searches for recent news articles on a gi
 
 ## Installation
 
+Note: Unless stated specifically, most commands are UNIX specific. Windows Devices using powershell have a different suite of commands.
+
 1. Clone the repository: 
    => ```sh git clone link-to-repository```
 2. Enter cloned directory
@@ -15,6 +17,7 @@ This project is a CLI Apllication that searches for recent news articles on a gi
 
 4. Activate the Virtual Environment
     => `source .venv/bin/activate`
+    => on Windows Devices, this is `.venv\Scripts\activate`
 
 5. Verify you are in the correct envrironment
     => `which pip` and `which python` to check if you're in .venv
@@ -22,20 +25,38 @@ This project is a CLI Apllication that searches for recent news articles on a gi
 6. Install required packages
     => `pip install -r requirements.txt`
 
+### Configuring .env
+
+Rename the `.env.example` file to `.env`
+
+Enter your API Key for News API instead of the example listed.
+
+See below on how to obtain your API Key
+
+### Setting up News API Token
+
+1. Make an account at https://newsapi.org/
+2. Press **Get API Key->** Button on Homepage
+3. You will be offered a free development API Key. Be sure to save it and use it
+
 ## Usage
 
-Run the application in your terminal.
+There are a couple different ways to start the application.
 
-`python src/main.py`
+ 
+###1. Running from the terminal
+Run the application in your terminal. Make sure you're already in the project's root directory
+
+`python main.py`
 
 If you're getting Import Errors such as no module named 'src'; update PYTHONPATH and then run `main.py`
 
 ```sh
 export PYTHONPATH="${PYTHONPATH}:/path/to/project_root/src"
-python src/main.py
+python main.py
 ```
 
-## Run Unit Tests
+###1.1. Run Unit Tests
 
 To run tests, from the project directory in terminal use command:
 1. => `pytest`
@@ -49,39 +70,32 @@ To run tests, from the project directory in terminal use command:
 6. Run specific test within a file
 => `pytest path/to/test_file.py::test_case_name`
 
-## Configuring .env
-
-Rename the `.env.example` file to `.env`
-
-Enter your API Key for News API instead of the example listed.
-
-## Running in Docker
+###2. Running in Docker
 
 To Run in Docker, you need to have Docker Desktop installed and running in the background. From your repository, use
 
 1. `docker build -t news-topic-aggregator .`
-2. `docker run -it --rm --env-file .env news-topic-aggregator`
+2. `docker run -it --rm --env-file .env -v "$(pwd)/history:/app/history" news-topic-aggregator`
 
-## Shell Script to Run it with PYTHONPATH exported
+ - With the `--env-file flag` we specify our `.env` file from which the API Key is read
+ - With `-v` flag we set the output where the CSV files are written locally
+ - With the `it` flag we run interactively on the terminal and accept user inputs, this means that you can run `pytest` in the Terminal via Docker
+  
 
-This is a simple Shell script to run the application. You do need to make sure that the `.env` file with API Key and `.venv` is already correctly configued.
+###3. Shell Script to Run it with PYTHONPATH exported
 
-You do not need to activate the virtual envrionment.
+This is a simple Shell script to run the application on UNIX devices in **bash**. You do need to make sure that the `.env` file with API Key and `.venv` is already correctly configued. This streamlines all the nitty gritty steps and reduces inconvenience.
 
-1. `chmod +x start.sh`
+You do not need to activate the virtual envrionment, as that is a specified step in the script itself.
+
+
+1. `chmod +x start.sh` to set the file as an executable
 2. `./start.sh --run` or `./start.sh --test` or `./start.sh --docker`
 
 - `--run` flag starts the application
 - `--test` flag runs pytest suite before starting application
 - `--docker` flag builds docker image and runs container
 
-This script is written in bash.
-
-## Setting up News API Token
-
-1. Make an account at https://newsapi.org/
-2. Press **Get API Key->** Button on Homepage
-3. You will be offered a free development API Key. Be sure to save it and use it
 
 ## Navigating the Application
 
