@@ -2,7 +2,7 @@
 import pandas as pd
 from datetime import datetime
 from pathlib import Path
-import yaml
+import re, yaml
 
 # Import News Search Modules
 from src.search_news import search_news_articles
@@ -119,7 +119,8 @@ def main():
             print(f"Making '{destination_path}'")
             destination_path.mkdir(parents=True, exist_ok=True)
         # Set Filename and Save Path; Save File from df to CSV
-        csv_filename = f"{topic.replace(" ", "_")}_articles_{language}_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv"
+        topic_alnum = re.sub(r'[^a-zA-Z0-9]', "", topic)
+        csv_filename = f"{topic_alnum.replace(" ", "_")}_articles_{language}_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv"
         save_file = destination_path / csv_filename
         df_articles.to_csv(save_file, index=False)
         print(f"\nAll articles saved to Path('{save_file}') in {destination_path} subfolder")
