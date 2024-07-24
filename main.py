@@ -23,7 +23,7 @@ from src.utils.spinner import Spinner
 from src.utils.get_keys import get_env
 
 # Import Input Cleaner
-from src.utils.secure_input import sanitize_input
+from src.utils.secure_input import sanitize_input, sanitize_model_name
 
 # Import Help Strings
 from src.cli_help import help_command_output
@@ -40,16 +40,22 @@ class ApplicationMode(Enum):
 # Main Script for CLI Application
 def main():
 
-    # Initialize debut settings
+    # Initialize settings and configurations
     NEWS_API_KEY = get_env("NEWS_API_KEY")  # Extract API Key for NewsAPI
+
     with open("config.yaml", "r") as f:
         config = yaml.safe_load(f)
+
     language = config["default_language"]  # Default to English
+
+    model_id = config["hugging_face"]["model"]  # Default is "facebook/bart-large-cnn"
+
     # Usage Hints
     print(
         "\nEnter a topic to search. Or..\n"
         "Type '!help' to get usage instructions\n"
         "Type '!setlang' to change query language\n"
+        "Type '!sethf' to change HuggingFace parameters\n"
         "Type '!exit' or '!quit' to close application"
     )
 
@@ -76,10 +82,10 @@ def main():
         if topic.strip().lower() == "!setlang":
             language = (
                 input(
-                    "Restrict your output to a specific language\n"
+                    "\nRestrict your output to a specific language\n"
                     "Type 'en' for English or 'de' for German and press Enter\n"
                     f"Current Language Setting: {language}\n"
-                    ">>"
+                    ":"
                 )
                 .strip()
                 .lower()
@@ -95,6 +101,40 @@ def main():
                     print("This is not a valid setting. Switching to Default.")
                     language = "en"
                     continue
+
+        # - Change Hugging Face Parameters
+        if topic.strip().lower() == "!sethf":
+            model_id = (
+                input(
+                    "\nChange the Model you use to summarize content\n"
+                    "Please be mindful to use valid model IDs\n"
+                    "Type in 'default' to swtich back to \"facebook/bart-large-cn\"\n"
+                    "Example: facebook/bart-large-cnn\n"
+                    "Some more useful models:\n"
+                    "\tgoogle/pegasus-xsum\n"
+                    "\tsshleifer/distilbart-cnn-12-6\n"
+                    "\topenai/gpt-3.5-turbo\n"
+                    f"Current Model: {model_id}\n"
+                    ":"
+                )
+                .strip()
+                .lower()
+            )
+            model_id = sanitize_model_name(model_id)
+            print(f"Model is set to >>{model_id}<<")
+            match model_id:
+                case "default":
+                    model_id = config["hugging_face"]["model"]
+                    print(f"Model is set to default >>{model_id}<<")
+                    continue
+                case "":
+                    print("That is not a valid model ID. Switching to Default...")
+                    model_id = config["hugging_face"]["model"]
+                    print(f"Model is set to default >>{model_id}<<")
+                    continue
+                case _:
+                    continue
+
         # Search Articles from News API
         print(f"\nAlright! Searching for articles on >>{topic}<<")
 
@@ -112,9 +152,7 @@ def main():
 
         # If no articles found, let us know some details and skip iteration
         if not articles:
-            print(
-                f"No articles found.\nTopic >>{topic}<<\nLanguage >>{language}<<.\n\n"
-            )
+            print(f"No articles found.\nTopic >>{topic}<<\nLanguage >>{language}<<.")
             continue
 
         # Remove deleted articles
@@ -162,9 +200,15 @@ def main():
 
         # * Requirement 3: Summarize Headlines of Top 15  Articles
         with Spinner("Summarizing Headlines..."):
-            summary = summarize_content_pipeline(
-                "\n".join([article["title"] for article in filtered_articles[:15]])
-            )
+            try:
+                summary = summarize_content_pipeline(
+                    "\n".join([article["title"] for article in filtered_articles[:15]]),
+                    model_id=model_id,
+                )
+            except Exception as e:
+                print("\nThe model ID seems to be faulty")
+                print("Use !sethf for valid model IDs")
+                continue
 
         print("\n*--Summary of Top 15 Articles Headlines--*")
         print(summary)
