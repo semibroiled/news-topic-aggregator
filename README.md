@@ -193,7 +193,9 @@ LangChain was chosen to allow potential switching between different services, en
 
 #### Community Focus with Hugging Face
 
-Hugging Face was selected for its open-source nature and active community, providing access to state-of-the-art NLP models. Especially for our case, we use Bart trained on CNN News Articles. 
+Hugging Face was selected for its open-source nature and active community, providing access to state-of-the-art NLP models. Especially for our case, we use Bart trained on CNN News Articles.
+
+Despite that, the performance is anything but optimal. Often only part of headlines verbatim or misconstrued repeatable inferences are outputted instead.
 
 Update: Added option to type in other models.
 
