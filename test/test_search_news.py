@@ -1,5 +1,5 @@
 import pytest
-import requests
+import requests # type: ignore[import-untyped]
 from src.search_news import search_news_articles
 
 

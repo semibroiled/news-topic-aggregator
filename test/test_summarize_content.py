@@ -1,10 +1,10 @@
 import pytest
-from src.summarize_content import extract_named_entities, summarize_content_pipeline
+from src.summarize_content import extract_named_entities_nltk, summarize_content_pipeline
 
 
 def test_extract_named_entities():
     text = "Amitav Chris Mostafa is applying to Summetix for a job. Johannes Daxenberger is going to interview him"
-    named_entities = extract_named_entities(text)
+    named_entities = extract_named_entities_nltk(text)
     assert "Amitav Chris Mostafa" in named_entities
     assert "Johannes Daxenberger" in named_entities
     assert "Summetix" in named_entities

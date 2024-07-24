@@ -37,7 +37,7 @@ def search_news_articles(
     topic: str,
     api_key: Optional[str],
     *,
-    language: Optional[Language],
+    language: Optional[Language] = "en",
     url: Optional[str] = "https://newsapi.org/v2/everything",
     from_date: Optional[datetime] = None,
     sort_type: Optional[str] = "relevancy",
@@ -57,12 +57,12 @@ def search_news_articles(
     List[Dict[str, str]]: A list of dictionaries containing the title, URL, and publication date of the articles.
     """
     assert api_key, "There are no API Key passed to function"
-    
+
     # Default to Last Month if No From Date Passed
     # if not from_date:
     #     from_date = datetime.now() - timedelta(
     #         days=30
-    #     )  
+    #     )
 
     # Set Params
     params = {

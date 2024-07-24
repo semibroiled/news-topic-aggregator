@@ -11,7 +11,10 @@ from collections import Counter
 from src.search_news import search_news_articles
 
 # Import Summarization Modules
-from src.summarize_content import summarize_content_pipeline, extract_named_entities
+from src.summarize_content import (
+    summarize_content_pipeline,
+    extract_named_entities_nltk,
+)
 
 # Import Console Animation
 from src.utils.spinner import Spinner
@@ -171,7 +174,7 @@ def main():
             time.sleep(3)
             all_named_entities = []  # Empty list to store entities
             for title in df_articles.head(15)["title"]:
-                named_entities = extract_named_entities(title)
+                named_entities = extract_named_entities_nltk(title)
                 all_named_entities.extend(named_entities)
             named_entities_counter = Counter(all_named_entities)
         print("\n*--Named Entities in Top 15 Articles Headlines--*")
