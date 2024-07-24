@@ -97,7 +97,11 @@ def main():
 
         with Spinner("Fetching Articles..."):
             try:
-                articles = search_news_articles(topic, NEWS_API_KEY)
+                articles = search_news_articles(
+                    topic,
+                    NEWS_API_KEY,
+                    language=language,
+                )
             except Exception as e:
                 print(f"\n{e}")
                 print("\nPlease Try Again")
@@ -129,11 +133,11 @@ def main():
                 print(f"Making '{destination_path}'")
                 destination_path.mkdir(parents=True, exist_ok=True)
             # Set Filename and Save Path; Save File from df to CSV
-            topic = topic.replace(" ", "_")
             topic_alnum = re.sub(
-                r"[^a-zA-Z0-9]", "", topic
+                r"[^a-zA-Z0-9\s]", "", topic
             )  # Remove any speicals chars to avoid save issues
-            csv_filename = f"{topic_alnum}_articles_{language}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+            topic_alnum = topic_alnum.replace(" ", "_")
+            csv_filename = f"{str(topic_alnum).lower()}_articles_{language}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
             save_file = destination_path / csv_filename
             df_articles.to_csv(save_file, index=False)
         print(f"\nAll articles saved to Path('{save_file}') ✅")
