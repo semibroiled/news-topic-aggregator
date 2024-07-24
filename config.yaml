@@ -6,5 +6,12 @@ news_api:
   endpoint: everything
   sort_type: relevancy
   language: en
+  from_date:
+    months_before: 1
+hugging_face:
+  model: facebook/bart-large-cnn
+  max_length: 100
+  min_length: 30
+  do_sample: False
 
 
