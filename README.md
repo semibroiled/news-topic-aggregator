@@ -81,6 +81,29 @@ To Run in Docker, you need to have Docker Desktop installed and running in the b
  - With `-v` flag we set the output where the CSV files are written locally
  - With the `it` flag we run interactively on the terminal and accept user inputs, this means that you can run `pytest` in the Terminal via Docker
   
+####2.1. Setting Docker Settings
+
+On macOS and Windows
+
+Docker Desktop provides a graphical interface to allocate more resources to Docker.
+
+	1.	Open Docker Desktop:
+	•	Click on the Docker icon in the taskbar to open Docker Desktop.
+	2.	Go to Settings/Preferences:
+	•	Click on the Settings or Preferences menu item. This is usually found in the Docker Desktop menu.
+	3.	Adjust Resources:
+	•	Navigate to the Resources section (on the left sidebar).
+	•	You can adjust the sliders for:
+	•	CPU: Increase the number of CPUs allocated.
+	•	Memory: Increase the amount of RAM allocated.
+	•	Swap: Adjust the swap space if needed.
+	•	Disk: Increase disk space allocation if needed.
+	4.	Apply and Restart:
+	•	After making adjustments, click Apply & Restart to apply the new settings and restart Docker.
+
+Do this if your container keeps crashing after the first query. 
+
+Due to running HuggingFace locally, this may generate too much resources for a container to run without restrictions leading it to eventually crash.
 
 ###3. Shell Script to Run it with PYTHONPATH exported
 
@@ -193,6 +216,8 @@ I didn't use argparse or really my favourites click/questionary to make the CLI.
 The application is a bit bloated perhaps and hence slow. The first few dozen runs it wasn't really like that. It just sort of happened. 
 
 I suspect exporting PYTHONPATH temporarily so many times might have done something, or just that the runtime itself is slow due to many unoptimized elements. 
+
+Not to mention, I am running HF locally instead of calling via API. As I was coding trying to march past depreceated commands, I eventually ran into a problem where internal method calls I have no control over are hindering code execution. This is beyond the scope of this project, and thus I have decided to run it locally instead.
 
 #### Sanitized Inputs
 
