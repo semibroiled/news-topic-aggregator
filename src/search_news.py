@@ -30,14 +30,14 @@ from typing import Optional, List, Dict
 from typing import Literal, TypeAlias
 
 # Type Aliases
-LanguageSelect: TypeAlias = Literal["en", "de"]
+Language: TypeAlias = Literal["en", "de"]
 
 
 def search_news_articles(
     topic: str,
     api_key: Optional[str],
     *,
-    language: Optional[LanguageSelect],
+    language: Optional[Language],
     url: Optional[str] = "https://newsapi.org/v2/everything",
     from_date: Optional[datetime] = None,
     sort_type: Optional[str] = "relevancy",
