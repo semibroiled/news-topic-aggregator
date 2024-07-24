@@ -1,8 +1,10 @@
 # Import Relevant Packages
 import pandas as pd
+import time
 from datetime import datetime
 from pathlib import Path
-import re, yaml
+import yaml, re
+from tabulate import tabulate
 
 # Import News Search Modules
 from src.search_news import search_news_articles
@@ -25,6 +27,9 @@ from enum import Enum
 # Set Descriptive Constants
 class ApplicationMode(Enum):
     RUN= True
+
+class DataframeIndexing(Enum):
+    SERIES = 1
 
 # Main Script for CLI Application
 def main():
@@ -82,11 +87,11 @@ def main():
                 case "en":
                     continue
                 case _:
-                    language = "en"
                     print("This is not a valid setting. Switching to Default.")
+                    language = "en"
                     continue    
         # Search Articles from News API
-        print(f"\nAlright! I will search the web for articles about '{topic}'")
+        print(f"\nAlright! I will search the web for articles about >>{topic}<<")
         
         
         with Spinner("Fetching Articles..."):
@@ -101,31 +106,41 @@ def main():
             print(f"No articles found.\nTopic >>{topic}<<\nLanguage >>{language}<<.\n\n")
             continue
         
-        # Requirement 1: Print Top 15 Articles by Sorting Relevance
-        print("\n########Top 15 Articles########")
+        # Remove deleted articles, no further information there for enduser
+        with Spinner("Filtering removed articles..."):
+            time.sleep(3)
+            filtered_articles = [article for article in articles if not "remove" in article["url"]]
+        
+        #* Requirement 1: Save Articles as a CSV file right after search
+        with Spinner("Saving fetched articles as .csv file..."):
+            df_articles = pd.DataFrame(filtered_articles)
+            # Define the destination path
+            destination_path = Path(config["output"]["folder"])
 
-        for i, article in enumerate(articles[:15]):
-            print(f"{i+1} -> {article["title"]} ({article["publishedAt"]}) - {article["url"]}")
+            # Create a folder for the output if it doesn't exist
+            if not destination_path.exists():
+                print(f"Path:('{destination_path}') not found")
+                print(f"Making '{destination_path}'")
+                destination_path.mkdir(parents=True, exist_ok=True)
+            # Set Filename and Save Path; Save File from df to CSV
+            topic_alnum = re.sub(r'[^a-zA-Z0-9]', "", topic) # Remove any speicals chars so save issues don't arise
+            csv_filename = f"{topic_alnum.replace(" ", "_")}_articles_{language}_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv"
+            save_file = destination_path / csv_filename
+            df_articles.to_csv(save_file, index=False)
+            print(f"\nAll articles saved to Path('{save_file}') ✅")
         
-        # Requirement 2: Save Articles as a CSV file
-        df_articles = pd.DataFrame(articles)
+        #* Requirement 2: Print Top 15 Articles in Terminal by Sorting Relevance
+        # Reset Index to begin at 1
+        df_articles.index = df_articles.index + 1
+        # Set pandas display options to show all columns and full width
+        pd.set_option('display.max_columns', None)
+        pd.set_option('display.width', None)
+    
+        # Print the first 15 rows of the filtered DataFrame using tabulate for better formatting
+        print("\n##########################Top 15 Articles##########################")
+        print(tabulate(df_articles.head(15), headers='keys', tablefmt='grid', showindex=True))
         
-        # Define the destination path
-        destination_path = Path(config["output"]["folder"])
-
-        # Create a folder for the output if it doesn't exist
-        if not destination_path.exists():
-            print(f"Path:('{destination_path}') not found")
-            print(f"Making '{destination_path}'")
-            destination_path.mkdir(parents=True, exist_ok=True)
-        # Set Filename and Save Path; Save File from df to CSV
-        topic_alnum = re.sub(r'[^a-zA-Z0-9]', "", topic)
-        csv_filename = f"{topic_alnum.replace(" ", "_")}_articles_{language}_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv"
-        save_file = destination_path / csv_filename
-        df_articles.to_csv(save_file, index=False)
-        print(f"\nAll articles saved to Path('{save_file}') in {destination_path} subfolder")
-        
-        # Requirement 3: Summarize Headlines of Top 15  Articles
+        #* Requirement 3: Summarize Headlines of Top 15  Articles
         print("\n")
         with Spinner("Summarizing Headlines..."):
             summary = summarize_content_pipeline("\n".join([article["title"] for article in articles[:15]]))
@@ -133,7 +148,8 @@ def main():
         print("\n*--Summary of Top 15 Articles Headlines--*")
         print(summary)
 
-        # Requirement 4: List Named Entities in Descending Order
+        #* Requirement 4: List Named Entities in Descending Order
+        # TODO: Don't do named entity in seuence joined, rather separately and then put together
         with Spinner("Listing Named Entities..."):
             named_entities = extract_named_entities("\n".join(article["title"] for article in articles[:15] ))
         #print("\n")
