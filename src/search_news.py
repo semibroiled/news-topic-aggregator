@@ -20,7 +20,8 @@ Example Usage:
         print(f"Title: {article['title']}, URL: {article['url']}, Published At: {article['publishedAt']}")
 """
 
-# Import Relevant Packagesimport requests  # type: ignore[import-untyped]
+# Import Relevant Packages
+import requests  # type: ignore[import-untyped]
 from datetime import datetime, timedelta
 from src.utils.get_keys import get_env
 
