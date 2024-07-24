@@ -57,10 +57,12 @@ def search_news_articles(
     List[Dict[str, str]]: A list of dictionaries containing the title, URL, and publication date of the articles.
     """
     assert api_key, "There are no API Key passed to function"
+    
+    # Default to Last Month if No From Date Passed
     # if not from_date:
     #     from_date = datetime.now() - timedelta(
     #         days=30
-    #     )  # Default to Last Month if No From Date Passed
+    #     )  
 
     # Set Params
     params = {
