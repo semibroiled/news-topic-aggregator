@@ -7,7 +7,7 @@ This project is a CLI Apllication that searches for recent news articles on a gi
 Note: Unless stated specifically, most commands are UNIX specific. Windows Devices using powershell have a different suite of commands.
 
 1. Clone the repository: 
-   => ```git clone link-to-repository```
+   => ```git clone https://github.com/semibroiled/news-topic-aggregator.git```
 2. Enter cloned directory
     => `cd news-topic-aggregator`
 
