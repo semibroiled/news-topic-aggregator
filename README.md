@@ -126,6 +126,7 @@ Upon running the application, you will be prompted to enter a topic to search. Y
 
 - !help - Display usage instructions.
 - !setlang - Change query language.
+- !sethf - Change Model ID for HuggingFace.
 - !exit or !quit - Close the application.
  
 ### Language Settings
@@ -133,6 +134,12 @@ Upon running the application, you will be prompted to enter a topic to search. Y
 To change the query language, use the !setlang command. Type en for English or de for German.
 
 Application Defaults to English.
+
+### HuggingFace Model Settings
+
+To change the model used for summarization, use !sethf command.
+
+Application Defaults to Barts CNN Model.
 
 ### Application Settings
 
@@ -188,7 +195,9 @@ LangChain was chosen to allow potential switching between different services, en
 
 Hugging Face was selected for its open-source nature and active community, providing access to state-of-the-art NLP models. Especially for our case, we use Bart trained on CNN News Articles. 
 
-#### Transition to Pipelines
+Update: Added option to type in other models.
+
+#### Transition to Local Pipelines
 
 Initially, API endpoints were used, but issues with internal kwargs calls led to a transition to pipelines. This approach leverages local resources for more reliable processing in terms of execution.
 
