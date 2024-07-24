@@ -44,7 +44,7 @@ See below on how to obtain your API Key
 There are a couple different ways to start the application.
 
  
-###1. Running from the terminal
+### 1. Running from the terminal
 Run the application in your terminal. Make sure you're already in the project's root directory
 
 `python main.py`
@@ -87,18 +87,18 @@ On macOS and Windows
 
 Docker Desktop provides a graphical interface to allocate more resources to Docker.
 
-	1.	Open Docker Desktop:
+1.	Open Docker Desktop:
 	•	Click on the Docker icon in the taskbar to open Docker Desktop.
-	2.	Go to Settings/Preferences:
+2.	Go to Settings/Preferences:
 	•	Click on the Settings or Preferences menu item. This is usually found in the Docker Desktop menu.
-	3.	Adjust Resources:
+3.	Adjust Resources:
 	•	Navigate to the Resources section (on the left sidebar).
 	•	You can adjust the sliders for:
 	•	CPU: Increase the number of CPUs allocated.
 	•	Memory: Increase the amount of RAM allocated.
 	•	Swap: Adjust the swap space if needed.
 	•	Disk: Increase disk space allocation if needed.
-	4.	Apply and Restart:
+4.	Apply and Restart:
 	•	After making adjustments, click Apply & Restart to apply the new settings and restart Docker.
 
 Do this if your container keeps crashing after the first query. 
