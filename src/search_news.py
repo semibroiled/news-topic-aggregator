@@ -1,16 +1,10 @@
 """
+search_news.py
+
 This module provides a function to search for news articles using the News API.
 
 Functions:
-    search_news_articles(
-        topic: str,
-        api_key: str,
-        url: Optional[str] = "https://newsapi.org/v2/everything",
-        language: Optional[str] = None,
-        from_date: Optional[str] = None,
-        sort_type: Optional[str] = "relevancy",
-    ) -> List[Dict[str, str]]:
-        Searches for news articles related to the given topic using the News API and returns a list of articles.
+    - search_news_articles: Searches for news articles related to the given topic using the News API and returns a list of articles.
 
 Example Usage:
     api_key = "your_news_api_key"
@@ -46,15 +40,19 @@ def search_news_articles(
     Search for news articles related to the given topic using the News API.
 
     Args:
-    topic (str): The topic to search for.
-    api_key (str): Your News API key.
-    url (Optional[str]): The URL endpoint for the News API. Default is "https://newsapi.org/v2/everything".
-    language (Optional[str]): The language of the news articles.
-    from_date (Optional[str]): The start date for the news articles (format: YYYY-MM-DD). Default is 30 days ago.
-    sort_type (Optional[str]): The sort type for the news articles. Default is "relevancy".
+        topic (str): The topic to search for.
+        api_key (str): Your News API key.
+        url (Optional[str]): The URL endpoint for the News API. Default is "https://newsapi.org/v2/everything".
+        language (Optional[Language]): The language of the news articles. Can only be en for English or de for German.
+        from_date (Optional[datetime]): The start date for the news articles (format: YYYY-MM-DD).
+        sort_type (Optional[str]): The sort type for the news articles. Default is "relevancy".
 
     Returns:
-    List[Dict[str, str]]: A list of dictionaries containing the title, URL, and publication date of the articles.
+        List[Dict[str, str]]: A list of dictionaries containing the title, URL, and publication date of the articles.
+
+    Raises:
+        AssertionError: If no API key is provided.
+        requests.exceptions.HTTPError: If the HTTP request returned an unsuccessful status code.
     """
     assert (
         api_key
@@ -87,7 +85,7 @@ def search_news_articles(
 
     # print(response.status_code)
 
-    # Conditionally Treat Different Status Code
+    # Conditionally Treat Different Status Codes
     match response.status_code:
         case 200:
             data = response.json()

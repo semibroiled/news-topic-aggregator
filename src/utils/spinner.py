@@ -1,7 +1,23 @@
 """
+spinner.py
+
 This module provides a Spinner class to display a spinning animation in the console
 while a running process is executing. The spinner runs in a separate thread and
 can be customized with different messages and animation speeds.
+
+Classes:
+    - Spinner: A class to create and manage a spinner animation in the console.
+
+Usage Example:
+    spinner = Spinner("Loading...")
+    spinner.start()
+    # Simulate a process
+    time.sleep(5)
+    spinner.stop()
+
+    # With Context Manager
+    with Spinner("Loading in context..."):
+        time.sleep(5)
 """
 
 # Import Relevant Packages
@@ -22,8 +38,8 @@ class Spinner:
         Initialize spinner with display message and animation speed
 
         Args:
-            message (str, optional): Message to display. Defaults to "Loading...".
-            animation_speed (float, optional): Speed of spinner animation in seconds. Defaults to 0.1.
+            message (str): Message to display. Defaults to "Loading...".
+            animation_speed (float): Speed of spinner animation in seconds. Defaults to 0.1.
         """
         self.message = message
         self.animation_speed = animation_speed
@@ -52,7 +68,6 @@ class Spinner:
         """Start new thread for spinner animation"""
         if not self.thread.is_alive():
             self.stop_spinner = False
-            self.thread: threading.Thread = threading.Thread(target=self._spin)
             self.thread.start()
 
     def stop(self) -> None:
@@ -84,4 +99,4 @@ if __name__ == "__main__":
     # With Context Manager
     print("Using Spinner in context manager")
     with Spinner("Something is loading dynamically in a context..."):
-        time.sleep(10)
+        time.sleep(10)  # Simulate a process

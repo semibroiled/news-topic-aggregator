@@ -1,12 +1,11 @@
 """
+summarize_content.py
+
 This module provides functions for summarizing content using a Hugging Face pipeline and extracting named entities using NLTK.
 
 Functions:
-    summarize_content_pipeline(content: str, model_id: Optional[str] = "facebook/bart-large-cnn") -> str:
-        Summarizes the given content using a specified Hugging Face model.
-
-    extract_named_entities(content: str) -> Counter[str, int]:
-        Extracts named entities from the given content and returns their counts.
+    - summarize_content_pipeline: Summarizes the given content using a specified Hugging Face model.
+    - extract_named_entities_nltk: Extracts named entities from the given content using NLTK.
 
 Example Usage:
     content = '''1. "Tech Giant Unveils Revolutionary AI Model, Promising to Transform Healthcare"
@@ -19,7 +18,7 @@ Example Usage:
     summary = summarize_content_pipeline(content)
     print(f"Summary: {summary}")
 
-    named_entities = extract_named_entities(content)
+    named_entities = extract_named_entities_nltk(content)
     for entity, freq in named_entities.most_common():
         print(f"{entity}: {freq}")
 """
@@ -76,11 +75,11 @@ def summarize_content_pipeline(
     resources to operate.
 
     Args:
-    content (str): The content to be summarized.
-    model_id Optional(str): The model ID for the Hugging Face pipeline. Default is "facebook/bart-large-cnn".
+        content (str): The content to be summarized.
+        model_id Optional(str): The model ID for the Hugging Face pipeline. Default is "facebook/bart-large-cnn".
 
     Returns:
-    str: The summarized content.
+        str: The summarized content.
     """
     hf_llm = HuggingFacePipeline.from_model_id(
         model_id=model_id,
@@ -101,10 +100,10 @@ def extract_named_entities_nltk(content: str) -> Counter:
     Extract named entities from the given content using NLTK.
 
     Args:
-    content (str): The content from which to extract named entities.
+        content (str): The content from which to extract named entities.
 
     Returns:
-    Counter[str, int]: A dictionary of named entities and their counts.
+        Counter: A dictionary of named entities and their counts.
     """
     sentences = nltk.sent_tokenize(content)
     tokens = [nltk.word_tokenize(sentence) for sentence in sentences]
