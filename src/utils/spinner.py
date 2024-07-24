@@ -27,8 +27,8 @@ class Spinner:
         """
         self.message = message
         self.animation_speed = animation_speed
-        self.spinner: Iterator[str] = itertools.cycle(["/", "─", "\\", "|"])
-        self.stop_running: bool = False
+        self.spinner_sequence: Iterator[str] = itertools.cycle(["/", "─", "\\", "|"])
+        self.stop_spinner: bool = False
         self.thread: threading.Thread = threading.Thread(target=self._spin)
 
     def __enter__(self) -> "Spinner":
@@ -50,20 +50,22 @@ class Spinner:
 
     def start(self) -> None:
         """Start new thread for spinner animation"""
-        self.stop_running = False
-        self.thread.start()
+        if not self.thread.is_alive():
+            self.stop_spinner = False
+            self.thread: threading.Thread = threading.Thread(target=self._spin)
+            self.thread.start()
 
     def stop(self) -> None:
         """Stop spinner animation and clear out line"""
-        self.stop_running = True
+        self.stop_spinner = True
         self.thread.join()
-        sys.stdout.write("\r" + " " * (len(self.message) + 1) + "\r")
+        sys.stdout.write("\r" + " " * (len(self.message) + 2) + "\r")
         sys.stdout.flush()
 
     def _spin(self) -> None:
         """Update spinner animation until stop is called"""
-        while not self.stop_running:
-            sys.stdout.write("\r" + self.message + next(self.spinner))
+        while not self.stop_spinner:
+            sys.stdout.write("\r" + self.message + next(self.spinner_sequence))
             sys.stdout.flush()
             time.sleep(self.animation_speed)
 
