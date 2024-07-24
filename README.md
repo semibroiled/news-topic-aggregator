@@ -7,17 +7,17 @@ This project is a CLI Apllication that searches for recent news articles on a gi
 Note: Unless stated specifically, most commands are UNIX specific. Windows Devices using powershell have a different suite of commands.
 
 1. Clone the repository: 
-   => ```git clone https://github.com/semibroiled/news-topic-aggregator.git```
+- => ```git clone https://github.com/semibroiled/news-topic-aggregator.git```
 2. Enter cloned directory
-    => `cd news-topic-aggregator`
+- => `cd news-topic-aggregator`
 
 3. Create Virtual Environment
-    => Make sure you have Python installed. Python 3.12 is reccomennded
-    => `python3 -m venv .venv`
+- => Make sure you have Python installed. Python 3.12 is reccomennded
+- => `python3 -m venv .venv`
 
 4. Activate the Virtual Environment
-    => `source .venv/bin/activate`
-    => on Windows Devices, this is `.venv\Scripts\activate`
+- => `source .venv/bin/activate`
+- => on Windows Devices, this is `.venv\Scripts\activate`
 
 5. Verify you are in the correct envrironment
     => `which pip` and `which python` to check if you're in .venv
