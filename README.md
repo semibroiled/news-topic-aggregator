@@ -20,10 +20,10 @@ Note: Unless stated specifically, most commands are UNIX specific. Windows Devic
 - => on Windows Devices, this is `.venv\Scripts\activate`
 
 5. Verify you are in the correct envrironment
-    => `which pip` and `which python` to check if you're in .venv
+- => `which pip` and `which python` to check if you're in .venv
 
 6. Install required packages
-    => `pip install -r requirements.txt`
+- => `pip install -r requirements.txt`
 
 ### Configuring .env
 
