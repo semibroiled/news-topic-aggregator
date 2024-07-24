@@ -1,10 +1,10 @@
 # Import Relevant Packages
-import pandas as pd
+import pandas as pd  # type: ignore[import-untyped]
 import time
 from datetime import datetime
 from pathlib import Path
-import yaml, re
-from tabulate import tabulate
+import yaml, re  # type: ignore[import-untyped]
+from tabulate import tabulate  # type: ignore[import-untyped]
 from collections import Counter
 
 # Import News Search Modules

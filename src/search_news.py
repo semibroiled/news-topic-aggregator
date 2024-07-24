@@ -20,21 +20,25 @@ Example Usage:
         print(f"Title: {article['title']}, URL: {article['url']}, Published At: {article['publishedAt']}")
 """
 
-# Import Relevant Packages
-import requests
+# Import Relevant Packagesimport requests  # type: ignore[import-untyped]
 from datetime import datetime, timedelta
 from src.utils.get_keys import get_env
 
 # Type Hints
 from typing import Optional, List, Dict
+from typing import Literal, TypeAlias
+
+# Type Aliases
+LanguageSelect: TypeAlias = Literal["en", "de"]
 
 
 def search_news_articles(
     topic: str,
-    api_key: str,
+    api_key: Optional[str],
+    *,
+    language: Optional[LanguageSelect],
     url: Optional[str] = "https://newsapi.org/v2/everything",
-    language: Optional[str] = None,
-    from_date: Optional[str] = None,
+    from_date: Optional[datetime] = None,
     sort_type: Optional[str] = "relevancy",
 ) -> List[Dict[str, str]]:
     """
@@ -51,10 +55,11 @@ def search_news_articles(
     Returns:
     List[Dict[str, str]]: A list of dictionaries containing the title, URL, and publication date of the articles.
     """
-    if not from_date:
-        from_date = datetime.now() - timedelta(
-            days=30
-        )  # Default to Last Month if No From Date Passed
+    assert api_key, "There are no API Key passed to function"
+    # if not from_date:
+    #     from_date = datetime.now() - timedelta(
+    #         days=30
+    #     )  # Default to Last Month if No From Date Passed
 
     # Set Params
     params = {
@@ -96,9 +101,9 @@ def search_news_articles(
 
 # Example Usage:
 if __name__ == "__main__":
-    api_key = get_env("NEWS_API_KEY")
+    api_key: Optional[str] = get_env("NEWS_API_KEY")
     topic = "technology"
-    articles = search_news_articles(topic, api_key)
+    articles = search_news_articles(topic, api_key, language="de")
     for article in articles:
         print(
             f"Title: {article['title']}, URL: {article['url']}, Published At: {article['publishedAt']}"
