@@ -6,7 +6,6 @@ venv/
 # Binary Files or Secrets
 .env
 *.pyc
-*.csv
 
 # Cache folders
 __pycache__/
