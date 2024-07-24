@@ -129,10 +129,11 @@ def main():
                 print(f"Making '{destination_path}'")
                 destination_path.mkdir(parents=True, exist_ok=True)
             # Set Filename and Save Path; Save File from df to CSV
+            topic = topic.replace(" ", "_")
             topic_alnum = re.sub(
                 r"[^a-zA-Z0-9]", "", topic
             )  # Remove any speicals chars to avoid save issues
-            csv_filename = f"{topic_alnum.replace(' ', '_')}_articles_{language}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+            csv_filename = f"{topic_alnum}_articles_{language}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
             save_file = destination_path / csv_filename
             df_articles.to_csv(save_file, index=False)
         print(f"\nAll articles saved to Path('{save_file}') ✅")
