@@ -96,7 +96,7 @@ def main():
                     language = "en"
                     continue
         # Search Articles from News API
-        print(f"\nAlright! Searching for articles about >>{topic}<<")
+        print(f"\nAlright! Searching for articles on >>{topic}<<")
 
         with Spinner("Fetching Articles..."):
             try:

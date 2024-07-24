@@ -56,7 +56,10 @@ def search_news_articles(
     Returns:
     List[Dict[str, str]]: A list of dictionaries containing the title, URL, and publication date of the articles.
     """
-    assert api_key, "There are no API Key passed to function"
+    assert (
+        api_key
+    ), "There are no API Key passed to function\n\
+        Consult README on how to set .env up properly"
 
     # Default to Last Month if No From Date Passed
     # if not from_date:
@@ -98,7 +101,10 @@ def search_news_articles(
                     }
                 )
         case _:
+            print("\n")
             response.raise_for_status()
+            print("Use command !help to get instruction on how to search")
+            print("If the API itself is overburdened, wait before trying again")
     return articles
 
 
