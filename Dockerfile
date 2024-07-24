@@ -10,6 +10,10 @@ COPY requirements.txt /app/
 # Install any dependencies specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Install spaCy NLP Models
+# RUN python -m spacy download en_core_web_lg
+# RUN python -m spacy download de_core_news_lg
+
 # Copy the rest of the application's code into the container at /app
 COPY . /app
 
