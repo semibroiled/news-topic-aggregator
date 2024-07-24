@@ -6,6 +6,9 @@ run_app() {
     source .venv/bin/activate
     # Export Python Path to include src
     export PYTHONPATH=$PYTHONPATH:./src
+    # Download SpaCy Packs if choosing SpaCy over NLTK
+    # python -m spacy download en_core_web_lg
+    # python -m spacy download de_core_news_lg
     # Run CLI app
     python main.py
     # Deactivate Venv
@@ -17,6 +20,9 @@ run_app_with_test(){
     source .venv/bin/activate
     # Export Python Path to include src
     export PYTHONPATH=$PYTHONPATH:./src
+    # Download SpaCy Packs if choosing SpaCy over NLTK
+    # python -m spacy download en_core_web_lg
+    # python -m spacy download de_core_news_lg
     # Run Pytest suite
     pytest
     # Run CLI app
